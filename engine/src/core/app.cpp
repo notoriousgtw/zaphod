@@ -41,6 +41,13 @@ namespace zaphod {
             onRender();
 
             // Check for window close, etc.
+			for (auto& window : m_windows)
+			{
+				if (window->shouldClose())
+				{
+					m_running = false;
+				}
+			}
         }
 
         shutdown();

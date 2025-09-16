@@ -5,11 +5,14 @@
 
 namespace zaphod::log
 {
+
 class Logger
 {
 
   public:
-	void log(const std::string& message) {};
+	void log(const std::string& message);
+
+	void setFormat(const std::string& format, const std::vector<std::string>& format_params);
 
   private:
 	Logger()  = default;
@@ -25,13 +28,11 @@ class Logger
 class LoggerBuilder
 {
   public:
-	static void create() = 0;
-
   private:
 	LoggerBuilder()	 = default;
 	~LoggerBuilder() = default;
 
-	void buildFormat(const std::string& format, std::vector<std::string>> format_params);
+	void buildFormat(const std::string& format, std::vector<std::string> format_params);
 };
 
 }	 // namespace zaphod::log

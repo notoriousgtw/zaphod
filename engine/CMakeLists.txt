@@ -14,7 +14,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glfw)
 
-find_package(glm CONFIG REQUIRED)
+FetchContent_Declare(
+            glm
+            GIT_REPOSITORY https://github.com/g-truc/glm.git
+            GIT_TAG         1.0.1
+)
+        FetchContent_MakeAvailable(glm)
+
+#find_package(glm CONFIG REQUIRED)
 find_package(Vulkan)
 include_directories(${Vulkan_INCLUDE_DIRS})
 #add_compile_definitions(VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1)
