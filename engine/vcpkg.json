@@ -1,0 +1,8 @@
+{
+  "dependencies": [
+    "glm"
+  ],
+  "name": "zaphod-engine",
+  "description": "",
+  "version": "1.0"
+}
