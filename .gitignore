@@ -34,3 +34,15 @@
 out/
 
 .vs/
+
+# Linux Build files
+_deps/
+bin/
+CMakeFiles/
+*/CMakeFiles/
+cmake*
+*/cmake*
+*.spv
+CMakeCache.txt
+Makefile
+*/Makefile
