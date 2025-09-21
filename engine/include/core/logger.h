@@ -8,12 +8,25 @@
 #include <unordered_map>
 #include <vector>
 
-namespace zaphod::log
+namespace zaphod
 {
 
 class Logger
 {
   public:
+	// struct Parameter
+	//{
+	//	std::string token;
+	//	std::string value;
+	//	bool		isDynamic = false;	  // If true, the value will be provided at log time
+	// };
+
+	struct Format
+	{
+		std::string									 formatString;
+		std::unordered_map<std::string, std::string> parameters;
+	};
+
 	enum class LogDestination
 	{
 		CONSOLE,
@@ -23,84 +36,65 @@ class Logger
 	enum class LogLevel : uint32_t
 	{
 		EMPTY,
-		DEBUG,
 		INFO,
+		DEBUG,
 		WARN,
 		ERROR,
 		FATAL
 	};
+	Logger()		  = default;
+	virtual ~Logger() = default;
 
 	typedef Flags<LogLevel> LogLevelFlags;
 
-	void setFormat(const std::string& format, const std::unordered_map<std::string, std::string> parameters);
+	void addFormat(const Format& format);
+	void removeFormat(const size_t index);
+	void setFormat(const size_t index, const Format& format);
 	void addDestination(LogDestination destination) { m_destinations.emplace(destination); };
 	void removeDestination(LogDestination destination) { m_destinations.erase(destination); };
 	void setLogLevelFlags(LogLevelFlags flags) { m_log_level_flags = flags; };
+	void setLogLevelFlags(std::vector<LogLevel> levels) { m_log_level_flags = LogLevelFlags(levels); };
 	void setLogLevelFlag(LogLevel level, bool enable = true) { m_log_level_flags.setFlag(level, enable); };
 
-	void updateFormatParameter(const std::string& token, const std::string& value);
+	void updateFormatParameter(const size_t index, const std::string& token, const std::string& value);
 	void updateLogLevelFlags(LogLevelFlags flags) { m_log_level_flags.updateFlags(flags); };
 
-  private:
-	Logger() = default;
-	//~Logger() = default;
-	// Logger(const Logger&)			 = delete;
-	// Logger& operator=(const Logger&) = delete;
-	// Logger(Logger&&)				 = delete;
-	// Logger& operator=(Logger&&)		 = delete;
+  protected:
+	void log(const std::string& message, const std::vector<std::string>& parameters, size_t format_index, LogLevel level);
 
-	void log(const std::vector<std::string>& parameters, LogLevel level);
-
-	std::string									 m_format;
-	std::unordered_map<std::string, std::string> m_parameters;
-	std::set<LogDestination>					 m_destinations;
-	LogLevelFlags								 m_log_level_flags;
+	std::set<LogDestination> m_destinations;
+	std::vector<Format>		 m_formats;
+	LogLevelFlags			 m_log_level_flags;
 };
 
-class LoggerBuilder
+class SimpleLogger: public Logger
 {
   public:
-	virtual void   buildFormat()	   = 0;
-	virtual void   buildDestinations() = 0;
-	virtual void   buildLogLevel()	   = 0;
-	virtual Logger construct()		   = 0;
-};
+	SimpleLogger()			 = default;
+	~SimpleLogger() override = default;
 
-class LoggerDirector
-{
-  public:
-	Logger createLogger(LoggerBuilder& builder)
-	{
-		builder.buildFormat();
-		builder.buildDestinations();
-		builder.buildLogLevel();
-		return builder.construct();
-	}
-};
-
-class StandardLoggerBuilder: public LoggerBuilder
-{
-  public:
-	StandardLoggerBuilder(std::string app_name);
-	void   buildFormat() override;
-	void   buildDestinations() override;
-	void   buildLogLevel() override;
-	Logger construct() override;
+	void					   info(std::string message);
+	void					   debug(std::string message);
+	void					   warn(std::string message);
+	void					   error(std::string message);
+	void					   fatal(std::string message);
+	inline const static Format defaultFormat = { "%{TIME}% [\\%{LEVEL}%]: %{MES_SAGE}% %{*P1}% %{!LEVEL}%",
+												 { { "MES_SAGE", "A" }, { "LEVEL", "IN" } } };
 
   private:
-	Logger m_logger;
-	std::string m_format = "[%{APP_NAME}%]-{%{TAG}%} %{MESSAGE}%";
 };
 
-class ErrorLoggerBuilder: public LoggerBuilder
+template<typename T>
+class LoggerFactory
 {
   public:
-	void   buildFormat() override;
-	void   buildDestinations() override;
-	void   buildLogLevel() override;
-	Logger construct() override;
-
-  private:
-	Logger m_logger;
+	virtual ~LoggerFactory()			= default;
+	virtual std::unique_ptr<T> create() = 0;
 };
-}	 // namespace zaphod::log
+
+class SimpleLoggerFactory: public LoggerFactory<SimpleLogger>
+{
+  public:
+	std::unique_ptr<SimpleLogger> create() override;
+};
+}	 // namespace zaphod

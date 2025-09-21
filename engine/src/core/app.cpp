@@ -1,6 +1,7 @@
 #include "core/app.h"
 
 #include "core/glfw_common.h"
+#include "core/logger.h"
 
 #include <chrono>
 
@@ -26,6 +27,8 @@ namespace zaphod {
         auto lastTime = std::chrono::high_resolution_clock::now();
 
         m_windows.emplace_back(std::make_unique<Window>(1280, 720, "Zaphod Engine"));
+
+        auto logger = SimpleLoggerFactory().create();
 
         while (m_running) {
             auto currentTime = std::chrono::high_resolution_clock::now();
