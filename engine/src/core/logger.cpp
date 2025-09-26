@@ -9,8 +9,8 @@ namespace zaphod
 bool validateFormatParameters(const std::string& format, const std::unordered_map<std::string, std::string>& parameters)
 {
 	std::regex			  placeholder_regex(R"((\\)?%\{(!)?(\*)?((?:[A-Z]*[0-9]*_*)*)\}%)");
-	auto				  words_begin	= std::sregex_iterator(format.begin(), format.end(), placeholder_regex);
-	auto				  words_end		= std::sregex_iterator();
+	auto				  words_begin	  = std::sregex_iterator(format.begin(), format.end(), placeholder_regex);
+	auto				  words_end		  = std::sregex_iterator();
 	std::set<std::string> specialTokenSet = { "MESSAGE", "LEVEL", "TIME" };
 
 	// Uses regex to find all placeholders in the format string
@@ -149,8 +149,8 @@ bool validateFormatParameters(const std::string& format, const std::unordered_ma
 	The MESSAGE token should not be included in the parameters map as it is handled separately.
 */
 /*!
-	@param format - The log message format string.@param parameters -
-	A map of parameter tokens to their corresponding values.
+	@param format - The log message format string.
+	@param parameters - A map of parameter tokens to their corresponding values.
 */
 void Logger::addFormat(const Format& format)
 {

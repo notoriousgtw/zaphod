@@ -21,10 +21,40 @@ class Logger
 	//	bool		isDynamic = false;	  // If true, the value will be provided at log time
 	// };
 
-	struct Format
+	class Format
 	{
-		std::string									 formatString;
-		std::unordered_map<std::string, std::string> parameters;
+	  public:
+		typedef std::unordered_map<std::string, std::string> ParameterMap;
+
+		Format(std::string& formatString, ParameterMap& parameters) { validate(formatString, parameters); }
+
+		std::string					   getFormatString() const { return m_formatString; }
+		const ParameterMap&			   getStaticTokens() const { return const m_staticTokens; }
+		const std::vector<std::string> getDynamicTokens() const { return m_dynamicTokens; }
+		const std::vector<std::string> getSpecialTokens() const { return m_dynamicTokens; }
+
+		void setFormatString(const std::string& formatString) { validate(formatString); }
+		void setParameters(const ParameterMap& parameters) { validate(parameters); }
+		void setStaticToken(const std::string& token, const std::string& value)
+		{
+			auto it = m_staticTokens.find(token);
+			if (it != m_staticTokens.end())
+				it->second = value;
+		}
+
+		bool isValid() const { return m_isValid; }
+
+	  private:
+		std::string			  m_formatString;
+		ParameterMap		  m_staticTokens;
+		std::set<std::string> m_dynamicTokens;
+		std::set<std::string> m_specialTokens;
+		bool				  m_isValid = false;
+
+		void validate();
+		void validate(std::string formatString);
+		void validate(ParameterMap parameters);
+		void validate(std::string formatString, ParameterMap parameters);
 	};
 
 	enum class LogDestination
@@ -52,19 +82,19 @@ class Logger
 	void setFormat(const size_t index, const Format& format);
 	void addDestination(LogDestination destination) { m_destinations.emplace(destination); };
 	void removeDestination(LogDestination destination) { m_destinations.erase(destination); };
-	void setLogLevelFlags(LogLevelFlags flags) { m_log_level_flags = flags; };
-	void setLogLevelFlags(std::vector<LogLevel> levels) { m_log_level_flags = LogLevelFlags(levels); };
-	void setLogLevelFlag(LogLevel level, bool enable = true) { m_log_level_flags.setFlag(level, enable); };
+	void setLogLevelFlags(LogLevelFlags flags) { m_logLevelFlags = flags; };
+	void setLogLevelFlags(std::vector<LogLevel> levels) { m_logLevelFlags = LogLevelFlags(levels); };
+	void setLogLevelFlag(LogLevel level, bool enable = true) { m_logLevelFlags.setFlag(level, enable); };
 
 	void updateFormatParameter(const size_t index, const std::string& token, const std::string& value);
-	void updateLogLevelFlags(LogLevelFlags flags) { m_log_level_flags.updateFlags(flags); };
+	void updateLogLevelFlags(LogLevelFlags flags) { m_logLevelFlags.updateFlags(flags); };
 
   protected:
-	void log(const std::string& message, const std::vector<std::string>& parameters, size_t format_index, LogLevel level);
+	void log(const std::string& message, const std::vector<std::string>& dynamicParameters, size_t formatIndex, LogLevel level);
 
 	std::set<LogDestination> m_destinations;
 	std::vector<Format>		 m_formats;
-	LogLevelFlags			 m_log_level_flags;
+	LogLevelFlags			 m_logLevelFlags;
 };
 
 class SimpleLogger: public Logger

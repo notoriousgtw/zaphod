@@ -8,6 +8,9 @@ set(BUILD_SHARED_LIBS OFF)
 # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI")
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
+# Generate compile_commands.json to assist with tools like clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(zaphod)
 
 # Add subdirectories for engine and editor
