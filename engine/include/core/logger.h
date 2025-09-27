@@ -114,6 +114,20 @@ class SimpleLogger: public Logger
   private:
 };
 
+class ErrorLogger: public Logger
+{
+  public:
+	ErrorLogger() = default;
+	~ErrorLogger() = default;
+
+	void					   info(std::string message);
+	void					   debug(std::string message);
+	void					   warn(std::string message);
+	void					   error(std::string message);
+	void					   fatal(std::string message);
+	inline const static std::string defaultFormatString = "[ErrorHandler][%{LEVEL}%][%{TIME}%]:{%{FUNCTION}%}->%{MESSAGE}%";
+}
+
 template<typename T>
 class LoggerFactory
 {
