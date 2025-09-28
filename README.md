@@ -13,7 +13,7 @@ or (for debug)
 cmake --preset debug && cmake --build --preset debug-build
 ```
 
-\cond EXCLUDE_FROM_DOXYGEN
+<!-- DOXYGEN_EXCLUDE_BEGIN -->
 ## Documentation
 https://notoriousgtw.github.io/zaphod/index.html
-\endcond
+<!-- DOXYGEN_EXCLUDE_END -->
