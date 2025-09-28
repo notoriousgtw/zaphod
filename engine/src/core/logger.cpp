@@ -3,8 +3,29 @@
 #include <regex>
 #include <set>
 
-namespace zaphod
+namespace zaphod::logging
 {
+Result Logger::Format::validateFormatString(const std::string& formatString)
+{
+	return Result(Result::Code::SUCCESS);
+}
+
+Result Logger::Format::validateStaticTokens(const Logger::Format::ParameterMap& staticTokens)
+{
+	return Result(Result::Code::SUCCESS);
+}
+
+Result Logger::Format::validate(const std::string& formatString, const Logger::Format::ParameterMap& staticTokens)
+{
+	Result formatResult		 = validateFormatString(formatString);
+	Result staticTokenResult = validateStaticTokens(staticTokens);
+
+	if (!formatResult.isSuccess())
+		return formatResult;
+	if (!staticTokenResult.isSuccess())
+		return staticTokenResult;
+	return Result(Result::Code::SUCCESS);
+}
 
 bool validateFormatParameters(const std::string& format, const std::unordered_map<std::string, std::string>& parameters)
 {
@@ -119,76 +140,31 @@ bool validateFormatParameters(const std::string& format, const std::unordered_ma
 		return false;	 // MESSAGE placeholder is mandatory
 }
 
-//! Set the log format and parameters.
-/*!
-	Sets the log message format and validates the provided parameters against the format string.
-	The format string can contain several unique placeholders in the form of `%{TOKEN}%`,
-	where 'TOKEN' is a string that contains only uppercase letters, numbers, and underscores.
-
-	If the entire placeholder is preceded with a '\' (i.e. '\%{TOKEN}%') it will be treated as a literal string and not as a
-   placeholder.
-
-	Dynamic tokens are preceded with a '*' (i.e. '%{*TOKEN}%') to indicate that the parameter value will be provided at
-	log time.
-
-	The format string may contain special tokens:
-
-	MESSAGE - This will be replaced with the actual log message. It is mandatory to include this tag in the format string.
-	LEVEL - This will be replaced with the log level (INFO, DEBUG, WARN, ERROR, FATAL).
-	TIME - This will be replaced with the current timestamp. In the future you may be able to specify the timestamp format.
-
-	Special tokens (excluding MESSAGE) may be preceded with a '!' (i.e. '%{!TIME}%') to indicate that the special token
-	should be treated as a standard token and its value provided in the parameters map.
-	Additionally if the '!' is followed by a '*' (i.e. '%{!*TIME}%') it indicates that the token is dynamic, and the value will be
-   provided at log time.
-
-	The parameters map should contain key-value pairs where keys correspond to the tokens
-	in the format string, and values are the strings that will replace the placeholder containing that token.
-	Tokens in the parameters map should not include the surrounding '%{ }%', or any preceding '*' or '!' characters.
-	Special tokens may only be in the parameter map if they are in this format: '%{!TOKEN}%'.
-	The MESSAGE token should not be included in the parameters map as it is handled separately.
-*/
-/*!
-	@param format - The log message format string.
-	@param parameters - A map of parameter tokens to their corresponding values.
-*/
 void Logger::addFormat(const Format& format)
 {
-	validateFormatParameters(format.formatString, format.parameters);
 	m_formats.push_back(format);
 }
 
 void Logger::setFormat(const size_t index, const Format& format)
 {
-	validateFormatParameters(format.formatString, format.parameters);
-
 	m_formats[index] = format;
 }
 
 void Logger::updateFormatParameter(const size_t index, const std::string& token, const std::string& value)
 {
 	auto format = m_formats.at(index);
-	if (format.parameters.find(token) != format.parameters.end())
-	{
-		format.parameters[token] = value;
-	}
-	else
-	{
-		// Handle error: token not found
-	}
+	format.setStaticToken(token, value);
 }
 
 std::unique_ptr<SimpleLogger> SimpleLoggerFactory::create()
 {
 	auto logger = std::make_unique<SimpleLogger>();
-	logger->addFormat(SimpleLogger::defaultFormat);
+
+	Logger::Format defaultFormat(std::string(SimpleLogger::defaultFormatString), Logger::Format::ParameterMap {});
+	logger->addFormat(defaultFormat);
 	logger->addDestination(Logger::LogDestination::CONSOLE);
-	logger->setLogLevelFlags({ Logger::LogLevel::INFO,
-							   Logger::LogLevel::DEBUG,
-							   Logger::LogLevel::WARN,
-							   Logger::LogLevel::ERROR,
-							   Logger::LogLevel::FATAL });
-	return logger;
+	logger->setLogLevelFlags({ Logger::LogLevel::INFO, Logger::LogLevel::DEBUG });
+	return std::move(logger);	
 }
 
-}	 // namespace zaphod
+}	 // namespace zaphod::logging

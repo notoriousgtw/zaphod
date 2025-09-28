@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "format": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "thread": "cpp",
+        "vector": "cpp"
+    },
+    "files.exclude": {
+        "**/build": true
+    },
+    "runOnSave.commands": [
+        {
+            // Match any .cpp or .h files by path.
+            "match": ".*\\.h$",
+            "command": "extension.doxygen-runner.generate_doxygen",
+            "runIn": "vscode"
+        },
+    ]
+}

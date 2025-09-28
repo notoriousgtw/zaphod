@@ -28,7 +28,7 @@ namespace zaphod {
 
         m_windows.emplace_back(std::make_unique<Window>(1280, 720, "Zaphod Engine"));
 
-        auto logger = SimpleLoggerFactory().create();
+        auto logger = logging::SimpleLoggerFactory().create();
 
         while (m_running) {
             auto currentTime = std::chrono::high_resolution_clock::now();
