@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['documentation_0',['Welcome to the Zaphod Engine documentation!',['../index.html#autotoc_md0',1,'']]]
+  ['engine_0',['What is Zaphod Engine?',['../index.html#autotoc_md0',1,'']]]
 ];
