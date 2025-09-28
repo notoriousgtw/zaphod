@@ -25,7 +25,8 @@
 var NAVTREE =
 [
   [ "Zaphod Engine", "index.html", [
-    [ "Main Page", "index.html", "index" ],
+    [ "What is Zaphod Engine?", "index.html#autotoc_md1", null ],
+    [ "How to build", "index.html#autotoc_md2", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],

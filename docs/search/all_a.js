@@ -7,6 +7,5 @@ var searchData=
   ['m_5fisvalid_4',['m_isValid',['../classzaphod_1_1logging_1_1Logger_1_1Format.html#ad79344a6f07ead8cf26e198650746c10',1,'zaphod::logging::Logger::Format']]],
   ['m_5floglevelflags_5',['m_logLevelFlags',['../classzaphod_1_1logging_1_1Logger.html#a0daec1f9897eaf6b1070efd5cc081f8b',1,'zaphod::logging::Logger']]],
   ['m_5fspecialtokens_6',['m_specialTokens',['../classzaphod_1_1logging_1_1Logger_1_1Format.html#a499e389fa8ef06953532dfdbdcd317ed',1,'zaphod::logging::Logger::Format']]],
-  ['m_5fstatictokens_7',['m_staticTokens',['../classzaphod_1_1logging_1_1Logger_1_1Format.html#a7539108bfbe5ad8503944c136715f4e3',1,'zaphod::logging::Logger::Format']]],
-  ['main_20page_8',['Main Page',['../index.html',1,'']]]
+  ['m_5fstatictokens_7',['m_staticTokens',['../classzaphod_1_1logging_1_1Logger_1_1Format.html#a7539108bfbe5ad8503944c136715f4e3',1,'zaphod::logging::Logger::Format']]]
 ];

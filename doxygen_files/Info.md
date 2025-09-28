@@ -2,7 +2,7 @@
 
 ## What is Zaphod Engine?
 Zaphod Engine is a game/application engine built from the ground up using as few external libraries as possible.
-It's mainly a learning exercise for myself, however it is intended to be as functional, easy to use, and performant as possible.
+It's mainly a learning exercise for myself,and the intention is for it to balance functionality, ease of use, and performannce.
 
 ## How to build
 ```
