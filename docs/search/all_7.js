@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['how_20to_20build_0',['How to build',['../md_README.html#autotoc_md1',1,'']]]
+  ['how_20to_20build_0',['How to build',['../md_docs_2Info.html',1,'']]]
 ];
