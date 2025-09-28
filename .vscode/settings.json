@@ -9,6 +9,7 @@
     "files.exclude": {
         "**/build": true
     },
+    "doxygen_runner.configuration_file_override": "${workspaceFolder}/Doxyfile",
     "runOnSave.commands": [
         {
             // Match any .cpp or .h files by path.

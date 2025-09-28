@@ -1,4 +1,4 @@
-# Zaphod Engine
+# Main Page {#mainpage}
 
 ## What is Zaphod Engine?
 Zaphod Engine is a game/application engine built from the ground up using as few external libraries as possible.
@@ -12,6 +12,3 @@ or (for debug)
 ```
 cmake --preset debug && cmake --build --preset debug-build
 ```
-
-## Documentation
-https://notoriousgtw.github.io/zaphod/index.html

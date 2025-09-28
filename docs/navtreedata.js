@@ -24,8 +24,8 @@
 */
 var NAVTREE =
 [
-  [ "zaphod engine", "index.html", [
-    [ "How to build", "md_docs_2Info.html", null ],
+  [ "Zaphod Engine", "index.html", [
+    [ "Main Page", "index.html", "index" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['how_20to_20build_0',['How to build',['../md_docs_2Info.html',1,'']]]
+  ['documentation_0',['Welcome to the Zaphod Engine documentation!',['../index.html#autotoc_md0',1,'']]]
 ];
